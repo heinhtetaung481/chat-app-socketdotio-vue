@@ -40,10 +40,9 @@ const app = new Vue({
 
 import Echo from 'laravel-echo'
 
-let server = app.listen(8810)
 window._ = require('lodash')
 window.Popper = require('popper.js').default
-window.io = require('socket.io-client').listen(server)
+window.io = require('socket.io-client')
 
 // Socket.io
 window.Echo = new Echo({
