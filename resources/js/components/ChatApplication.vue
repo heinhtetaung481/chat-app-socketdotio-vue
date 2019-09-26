@@ -16,7 +16,7 @@
             <div class="col-8">
                 <div v-show="chatOpen && !loadingMessages">
                     <div class="row" style="max-height: 50vh; overflow: scroll; padding-bottom: 50px" ref="messageBox">
-                        <div class="col-12" v-for="message in messages"
+                        <div class="col-12" v-for="message in messages" v-bind:key="message"
                              :class="{'text-right': message.sender_id !== chatUserID}">
                             <small>{{ message.sender.name }} at {{ message.created_at }}</small>
                             <p>
