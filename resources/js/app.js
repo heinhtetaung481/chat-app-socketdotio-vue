@@ -42,7 +42,7 @@ import Echo from 'laravel-echo'
 
 window._ = require('lodash')
 window.Popper = require('popper.js').default
-window.io = require('socket.io-client')
+window.io = require('socket.io-client')(server, { origins: '*:*'})
 
 // Socket.io
 window.Echo = new Echo({
