@@ -16,7 +16,7 @@
             <div class="col-8">
                 <div v-show="chatOpen && !loadingMessages">
                     <div class="row" style="max-height: 50vh; overflow: scroll; padding-bottom: 50px" ref="messageBox">
-                        <div class="col-12" v-for="message in messages" v-bind:key="message"
+                        <div class="col-12" v-for="message in messages"
                              :class="{'text-right': message.sender_id !== chatUserID}">
                             <small>{{ message.sender.name }} at {{ message.created_at }}</small>
                             <p>
@@ -84,15 +84,23 @@
         if (app.chatUserID !== userID) {
           app.chatOpen = true
           app.chatUserID = userID
-          
-          // Start socket.io listener
-          Echo.channel('newMessage-' + app.chatUserID + '-' + app.$root.userID)
-            .listen('MessageSent', (data) => {
-              if (app.chatUserID) {
-                app.messages.push(data.message)
-              }
-            })
-          // End socket.io listener
+
+          // Start pusher listener
+          Pusher.logToConsole = true
+
+          var pusher = new Pusher('91444f14c15ffc573e96', {
+            cluster: 'eu',
+            forceTLS: true
+          })
+
+          var channel = pusher.subscribe('newMessage-' + app.chatUserID + '-' + app.$root.userID) // newMessage-[chatting-with-who]-[my-id]
+
+          channel.bind('App\\Events\\MessageSent', function (data) {
+            if (app.chatUserID) {
+              app.messages.push(data.message)
+            }
+          })
+          // End pusher listener
           app.loadMessages()
         }
       },
@@ -124,13 +132,12 @@
           }).then((resp) => {
             app.messages.push(resp.data)
             app.newMessage = ''
+          },
+          (error)=> {
+            console.log(error)
           })
         }
       }
     }
   }
 </script>
-
-<style scoped>
-
-</style>

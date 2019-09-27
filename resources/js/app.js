@@ -20,7 +20,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('chat-application', require('./components/ChatApplication.vue'));
+Vue.component('chat-application', require('./components/ChatApplication.vue').default);
 
 const app = new Vue({
     el: '#app',
@@ -42,13 +42,13 @@ import Echo from 'laravel-echo'
 
 window._ = require('lodash')
 window.Popper = require('popper.js').default
-window.io = require('socket.io-client')(server, { origins: '*:*'})
+window.Pusher = require('pusher-js')
 
 // Socket.io
-window.Echo = new Echo({
-  broadcaster: 'socket.io',
-  host: window.location.hostname + ':6001'
-})
+// window.Echo = new Echo({
+//   broadcaster: 'pusher',
+//   key: '3a5285911967406ef598'
+// })
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
