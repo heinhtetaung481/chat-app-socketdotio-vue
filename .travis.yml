@@ -17,7 +17,4 @@ before_install:
   - mysql -e 'CREATE DATABASE homestead_test;'
 
 script:
-  - phpunit --coverage-text
-  - phpcs --ignore=app/Http/Controllers/Auth,app/Http/Controllers/Controller.php app/Http/Controllers
-  - npm run production
-  - jshint resources/assets/js/modules/*
+  - phpunit tests --bootstrap vendor/autoload.php
